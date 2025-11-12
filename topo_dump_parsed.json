@@ -1,0 +1,495 @@
+{
+  "system_name": "H100 System (8 GPUs)",
+  "num_nodes": 1,
+  "num_gpus": 8,
+  "gpus": [
+    {
+      "id": 0,
+      "rank": 0,
+      "name": "NVIDIA H100 80GB HBM3",
+      "compute_capability": "9.0",
+      "memory_gb": 80,
+      "memory_bandwidth_gb_s": 3352,
+      "pci_bus_id": "0000:18:00.0",
+      "pcie_gen": 5,
+      "pcie_lanes": 16,
+      "pcie_bandwidth_gb_s": 128,
+      "numa_node": 0,
+      "cpu_affinity": [
+        0
+      ],
+      "device_id": "0x2330",
+      "nvlink_raw": [
+        {
+          "target_busid": "0000:07:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:06:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:05:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:08:00.0",
+          "lanes": 4
+        }
+      ],
+      "nvlink_total_lanes": 18,
+      "gdr_support": true,
+      "nvlink_peers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "nvlink_bandwidth_gb_s": 450,
+      "connected_to": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": 1,
+      "rank": 1,
+      "name": "NVIDIA H100 80GB HBM3",
+      "compute_capability": "9.0",
+      "memory_gb": 80,
+      "memory_bandwidth_gb_s": 3352,
+      "pci_bus_id": "0000:2a:00.0",
+      "pcie_gen": 5,
+      "pcie_lanes": 16,
+      "pcie_bandwidth_gb_s": 128,
+      "numa_node": 0,
+      "cpu_affinity": [
+        0
+      ],
+      "device_id": "0x2330",
+      "nvlink_raw": [
+        {
+          "target_busid": "0000:08:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:06:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:07:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:05:00.0",
+          "lanes": 4
+        }
+      ],
+      "nvlink_total_lanes": 18,
+      "gdr_support": true,
+      "nvlink_peers": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "nvlink_bandwidth_gb_s": 450,
+      "connected_to": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": 2,
+      "rank": 2,
+      "name": "NVIDIA H100 80GB HBM3",
+      "compute_capability": "9.0",
+      "memory_gb": 80,
+      "memory_bandwidth_gb_s": 3352,
+      "pci_bus_id": "0000:3a:00.0",
+      "pcie_gen": 5,
+      "pcie_lanes": 16,
+      "pcie_bandwidth_gb_s": 128,
+      "numa_node": 0,
+      "cpu_affinity": [
+        0
+      ],
+      "device_id": "0x2330",
+      "nvlink_raw": [
+        {
+          "target_busid": "0000:06:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:05:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:08:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:07:00.0",
+          "lanes": 5
+        }
+      ],
+      "nvlink_total_lanes": 18,
+      "gdr_support": true,
+      "nvlink_peers": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "nvlink_bandwidth_gb_s": 450,
+      "connected_to": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": 3,
+      "rank": 3,
+      "name": "NVIDIA H100 80GB HBM3",
+      "compute_capability": "9.0",
+      "memory_gb": 80,
+      "memory_bandwidth_gb_s": 3352,
+      "pci_bus_id": "0000:5d:00.0",
+      "pcie_gen": 5,
+      "pcie_lanes": 16,
+      "pcie_bandwidth_gb_s": 128,
+      "numa_node": 0,
+      "cpu_affinity": [
+        0
+      ],
+      "device_id": "0x2330",
+      "nvlink_raw": [
+        {
+          "target_busid": "0000:08:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:06:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:05:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:07:00.0",
+          "lanes": 5
+        }
+      ],
+      "nvlink_total_lanes": 18,
+      "gdr_support": true,
+      "nvlink_peers": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ],
+      "nvlink_bandwidth_gb_s": 450,
+      "connected_to": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": 4,
+      "rank": 4,
+      "name": "NVIDIA H100 80GB HBM3",
+      "compute_capability": "9.0",
+      "memory_gb": 80,
+      "memory_bandwidth_gb_s": 3352,
+      "pci_bus_id": "0000:9a:00.0",
+      "pcie_gen": 5,
+      "pcie_lanes": 16,
+      "pcie_bandwidth_gb_s": 128,
+      "numa_node": 1,
+      "cpu_affinity": [
+        1
+      ],
+      "device_id": "0x2330",
+      "nvlink_raw": [
+        {
+          "target_busid": "0000:07:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:08:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:05:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:06:00.0",
+          "lanes": 5
+        }
+      ],
+      "nvlink_total_lanes": 18,
+      "gdr_support": true,
+      "nvlink_peers": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7
+      ],
+      "nvlink_bandwidth_gb_s": 450,
+      "connected_to": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "id": 5,
+      "rank": 5,
+      "name": "NVIDIA H100 80GB HBM3",
+      "compute_capability": "9.0",
+      "memory_gb": 80,
+      "memory_bandwidth_gb_s": 3352,
+      "pci_bus_id": "0000:ab:00.0",
+      "pcie_gen": 5,
+      "pcie_lanes": 16,
+      "pcie_bandwidth_gb_s": 128,
+      "numa_node": 1,
+      "cpu_affinity": [
+        1
+      ],
+      "device_id": "0x2330",
+      "nvlink_raw": [
+        {
+          "target_busid": "0000:06:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:08:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:07:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:05:00.0",
+          "lanes": 4
+        }
+      ],
+      "nvlink_total_lanes": 18,
+      "gdr_support": true,
+      "nvlink_peers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        6,
+        7
+      ],
+      "nvlink_bandwidth_gb_s": 450,
+      "connected_to": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        6,
+        7
+      ]
+    },
+    {
+      "id": 6,
+      "rank": 6,
+      "name": "NVIDIA H100 80GB HBM3",
+      "compute_capability": "9.0",
+      "memory_gb": 80,
+      "memory_bandwidth_gb_s": 3352,
+      "pci_bus_id": "0000:ba:00.0",
+      "pcie_gen": 5,
+      "pcie_lanes": 16,
+      "pcie_bandwidth_gb_s": 128,
+      "numa_node": 1,
+      "cpu_affinity": [
+        1
+      ],
+      "device_id": "0x2330",
+      "nvlink_raw": [
+        {
+          "target_busid": "0000:06:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:07:00.0",
+          "lanes": 5
+        },
+        {
+          "target_busid": "0000:08:00.0",
+          "lanes": 4
+        },
+        {
+          "target_busid": "0000:05:00.0",
+          "lanes": 4
+        }
+      ],
+      "nvlink_total_lanes": 18,
+      "gdr_support": true,
+      "nvlink_peers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+      ],
+      "nvlink_bandwidth_gb_s": 450,
+      "connected_to": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7
+      ]
+    },
+    {
+      "id": 7,
+      "rank": 7,
+      "name": "NVIDIA H100 80GB HBM3",
+      "compute_capability": "9.0",
+      "memory_gb": 80,
+      "memory_bandwidth_gb_s": 3352,
+      "pci_bus_id": "0000:db:00.0",
+      "pcie_gen": 5,
+      "pcie_lanes": 16,
+      "pcie_bandwidth_gb_s": 128,
+      "numa_node": 1,
+      "cpu_affinity": [
+        1
+      ],
+      "device_id": "0x2330",
+      "nvlink_raw": [
+        {
+          "target_busid": "fffffff:ff:ff.0",
+          "lanes": 18
+        }
+      ],
+      "nvlink_total_lanes": 18,
+      "gdr_support": true,
+      "nvlink_peers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "nvlink_bandwidth_gb_s": 450,
+      "connected_to": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "cpus": [
+    {
+      "id": 0,
+      "cores": 64,
+      "arch": "x86_64",
+      "vendor": "GenuineIntel",
+      "connected_gpus": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 1,
+      "cores": 64,
+      "arch": "x86_64",
+      "vendor": "GenuineIntel",
+      "connected_gpus": [
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "interconnects": [
+    {
+      "type": "NVSwitch",
+      "version": "4.0",
+      "gpus": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "bidirectional_bandwidth_gb_s": 450,
+      "notes": "All-to-all connectivity via NVSwitch fabric"
+    }
+  ],
+  "topology_type": "nvswitch_all_to_all",
+  "has_nvswitch": true,
+  "topology_notes": "Parsed from NCCL topology XML. 8x NVIDIA H100 80GB HBM3 across 2 NUMA nodes. NVSwitch fabric detected. All 8 GPUs have all-to-all connectivity.",
+  "optimal_patterns": [
+    "All-reduce: Ring or recursive doubling (all paths have equal bandwidth)",
+    "All-to-all: Direct transfers (no intermediate hops)",
+    "Point-to-point: Direct NVSwitch connection with full bandwidth"
+  ]
+}
