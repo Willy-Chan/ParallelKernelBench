@@ -4,6 +4,7 @@ import os
 import argparse
 import tempfile
 import importlib.util
+import glob
 import hashlib
 import shutil
 import subprocess
@@ -74,15 +75,20 @@ def main():
     # Derive project root to set absolute defaults
     this_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(this_dir)
-    default_problem = os.path.join(project_root, "problems", "1.py")
     default_logs = os.path.join(project_root, "logs")
 
-    parser.add_argument("--problem_py", type=str, default=default_problem, help="Path to Python problem .py file containing 'solution'")
+    parser.add_argument("--level", type=int, default=1, help="Problem level (e.g., 1 for problems/level1)")
+    parser.add_argument("--problem_id", type=int, default=1, help="Problem ID within the level (e.g., 1 for 1_allreduce.py)")
     parser.add_argument("--logs_dir", type=str, default=default_logs, help="Directory to write per-rank outputs")
     parser.add_argument("--m", type=int, default=1024, help="Tensor rows")
     parser.add_argument("--n", type=int, default=1024, help="Tensor cols (use 1 for 1D)")
     parser.add_argument("--dtype", type=str, default="float32", choices=["float32", "float16", "bfloat16", "float64"], help="Tensor dtype")
     args = parser.parse_args()
+
+    # Resolve problem .py path from level and problem_id: problems/level{level}/{problem_id}_*.py
+    problem_dir = os.path.join(project_root, "problems", f"level{args.level}")
+    matches = glob.glob(os.path.join(problem_dir, f"{args.problem_id}_*.py"))
+    problem_path = matches[0]
 
     init_dist()
     rank = dist.get_rank()
@@ -91,7 +97,7 @@ def main():
     print(f"I am {rank + 1} of {world_size}")
 
     # Derive structured logs directory: logs/problem_<id>/reference and ensure companion 'solution' exists
-    problem_basename = os.path.splitext(os.path.basename(args.problem_py))[0]
+    problem_basename = os.path.splitext(os.path.basename(problem_path))[0]
     problem_label = f"problem_{problem_basename}"
     logs_problem_root = os.path.join(args.logs_dir, problem_label)
     logs_reference_dir = os.path.join(logs_problem_root, "reference")
@@ -108,7 +114,7 @@ def main():
     dtype = dtype_map[args.dtype]
     shape = (args.m, args.n)
 
-    py_solution_fn = load_python_solution(args.problem_py)
+    py_solution_fn = load_python_solution(problem_path)
     _ = run_python_solution_and_save(py_solution_fn, shape, dtype, logs_reference_dir)
     if rank == 0:
         print(f"Wrote per-rank outputs to: {logs_reference_dir}")

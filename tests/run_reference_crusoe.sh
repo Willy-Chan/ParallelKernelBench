@@ -1,11 +1,11 @@
 #!/bin/bash 
 #SBATCH --job-name=pytorch_distributed 
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=8
-#SBATCH --gres=gpu:8
+#SBATCH --ntasks-per-node=4
+#SBATCH --gres=gpu:4
 #SBATCH --time=01:00:00 
-#SBATCH --output=/home/willychan/other_projs/ParallelKernelBench/logs/output_%j.log 
-#SBATCH --error=/home/willychan/other_projs/ParallelKernelBench/logs/error_%j.log 
+#SBATCH --output=/home/ubuntu/nathanjp/ParallelKernelBench/logs/output_%j.log 
+#SBATCH --error=/home/ubuntu/nathanjp/ParallelKernelBench/logs/error_%j.log 
 
 ########################################################################
 # Parse command-line arguments
@@ -24,7 +24,9 @@ LEVEL=${5:-1}
 # Part 0: Set up environment variables as needed
 ########################################################################
 
-# Set rendezvous for NCCL env:// init used by tests/run_1.py
+# Set rendezvous for NCCL env:// init used by tests/run_reference.py
+source ~/activate_conda_aarch.sh 
+
 export MASTER_ADDR=$(scontrol show hostnames "$SLURM_NODELIST" | head -n 1)
 export MASTER_PORT=$((15000 + ($SLURM_JOB_ID % 20000)))
 
@@ -40,15 +42,14 @@ echo "Tensor shape: [$M, $N]"
 echo "Data type: $DTYPE"
 echo "=========================================="
 
-# Submit reference pytorch function
+# Submit reference pytorch function with arguments
 srun --export=ALL bash -lc "
+  CONDA_ROOT=\"/home/ubuntu/aarch_miniforge3/\"
   ENV_NAME=\"\${ENV_NAME:-pkb}\"
-  CONDA_ROOT=\"\$HOME/miniconda3\"
-
   if [ -n \"\$CONDA_ROOT\" ]; then
-    \"\$CONDA_ROOT/bin/conda\" run -n \"\$ENV_NAME\" python /home/willychan/other_projs/ParallelKernelBench/tests/run_reference.py --level $LEVEL --problem_id $PROBLEM_ID --m $M --n $N --dtype $DTYPE
+    \"\$CONDA_ROOT/bin/conda\" run -n \"\$ENV_NAME\" python /home/ubuntu/nathanjp/ParallelKernelBench/tests/run_reference.py --level $LEVEL --problem_id $PROBLEM_ID --m $M --n $N --dtype $DTYPE
   else
     echo \"Warning: conda not found on node \$(hostname); using system python\" >&2
-    python3 /home/willychan/other_projs/ParallelKernelBench/tests/run_reference.py --level $LEVEL --problem_id $PROBLEM_ID --m $M --n $N --dtype $DTYPE
+    python3 /home/ubuntu/nathanjp/ParallelKernelBench/tests/run_reference.py --level $LEVEL --problem_id $PROBLEM_ID --m $M --n $N --dtype $DTYPE
   fi
 "

@@ -4,6 +4,7 @@ import json
 import os
 import sys
 from typing import Optional
+import glob
 
 
 """
@@ -72,35 +73,56 @@ Ensure to respect the provided topology. Prefer high-bandwidth links (NVLink/NVS
 """
 
 
-problem_statement = """
+PROBLEM_STATEMENTS = {
+    "1": """
 Replace the following NCCL-based all-reduce (sum) reference with an NVSHMEM kernel implementation that performs the same collective entirely from GPU kernels (kernel-initiated communication), minimizing host synchronization and maximizing overlap. Your solution must:
 - Produce identical numerical results to the reference (elementwise sum across all ranks)
 - Work for arbitrary tensor shapes and dtypes provided at runtime (assume dense, contiguous Tensors)
 - Respect the provided system topology (prefer NVLink/NVSwitch paths when relevant)
 - Run one rank per GPU with torch.distributed already initialized
-"""
+""",
+    "2": """
+Replace the following NCCL-based reduce-scatter (sum) reference with an NVSHMEM kernel implementation that performs the same collective entirely from GPU kernels (kernel-initiated communication), minimizing host synchronization and maximizing overlap. Your solution must:
+- Produce identical numerical results to the reference (reduce with sum operation, then scatter chunks to each rank)
+- Work for arbitrary tensor shapes and dtypes provided at runtime (assume dense, contiguous Tensors)
+- Each rank should receive exactly 1/world_size of the reduced tensor
+- Respect the provided system topology (prefer NVLink/NVSwitch paths when relevant)
+- Run one rank per GPU with torch.distributed already initialized
+""",
+    "3": """
+Replace the following NCCL-based all-gather reference with an NVSHMEM kernel implementation that performs the same collective entirely from GPU kernels (kernel-initiated communication), minimizing host synchronization and maximizing overlap. Your solution must:
+- Produce identical numerical results to the reference (concatenation of all ranks' tensors in rank order)
+- Work for arbitrary tensor shapes and dtypes provided at runtime (assume dense, contiguous Tensors)
+- All ranks must receive identical output containing everyone's data
+- Respect the provided system topology (prefer NVLink/NVSwitch paths when relevant)
+- Run one rank per GPU with torch.distributed already initialized
+""",
+}
 
 
 
 
 
 
-def construct_prompt(problem_id: str = None, topology: str = None):
+def construct_prompt(problem_id: str = None, topology: str = None, level: str = "1"):
     """Construct the prompt. Can be called with parameters or via argparse."""
     if problem_id is None or topology is None:
         # Called as script - use argparse
         parser = argparse.ArgumentParser(description="Construct a master PKB prompt from components.")
         parser.add_argument("--problem_id", required=True, help="Numerical ID of the problem")
         parser.add_argument("--topology", required=True, help="Path to topology JSON (LLM-friendly JSON)")
+        parser.add_argument("--level", default="1", help="Problem level directory (e.g., '1' for problems/level1)")
         parser.add_argument("--out", help="Optional path to save the constructed prompt")
         args = parser.parse_args()
         problem_id = args.problem_id
         topology = args.topology
+        level = args.level
     else:
         # Called as function - use provided parameters
         args = None
 
-    reference_impl_path = os.path.join(os.path.dirname(__file__), "../problems", f"{problem_id}.py")
+    problems_root = os.path.join(os.path.dirname(__file__), "../problems", f"level{level}")
+    reference_impl_path = glob.glob(os.path.join(problems_root, f"{problem_id}_*.py"))[0]
     try:
         with open(reference_impl_path, "r") as _f:
             _ref_impl_text = _f.read()
@@ -114,6 +136,12 @@ def construct_prompt(problem_id: str = None, topology: str = None):
             _system_topo_text = json.dumps(_system_topo_obj, indent=2)
     except Exception as _e:
         _system_topo_text = f"# ERROR reading {system_topo_path}: {_e}"
+
+    # Get problem-specific statement
+    problem_statement = PROBLEM_STATEMENTS.get(
+        problem_id,
+        f"# ERROR: No problem statement found for problem_id '{problem_id}'"
+    )
 
     # Construct reference implementation string
     reference_implementation = f"""```python
