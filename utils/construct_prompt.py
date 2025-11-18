@@ -100,7 +100,7 @@ def construct_prompt(problem_id: str = None, topology: str = None):
         # Called as function - use provided parameters
         args = None
 
-    reference_impl_path = os.path.join(os.path.dirname(__file__), "../problems", f"{problem_id}.py")
+    reference_impl_path = os.path.join(os.path.dirname(__file__), "../reference", f"{problem_id}.py")
     try:
         with open(reference_impl_path, "r") as _f:
             _ref_impl_text = _f.read()

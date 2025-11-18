@@ -49,10 +49,10 @@ def load_python_solution(problem_py_path: str):
     return getattr(mod, "solution")
 
 
-def save_tensor_to_logs(t: torch.Tensor, logs_dir: str, prefix: str) -> str:
+def save_tensor_to_logs(t: torch.Tensor, logs_dir: str) -> str:
     os.makedirs(logs_dir, exist_ok=True)
     rank = dist.get_rank()
-    path = os.path.join(logs_dir, f"{prefix}_rank{rank}.pt")
+    path = os.path.join(logs_dir, f"rank_{rank}.pt")
     torch.save(t.detach().cpu(), path)
     return path
 
@@ -66,7 +66,7 @@ def run_python_solution_and_save(py_fn, shape, dtype, logs_dir: str) -> str:
     y = py_fn(x)
     torch.cuda.synchronize()
     dist.barrier()
-    return save_tensor_to_logs(y, logs_dir, "py")
+    return save_tensor_to_logs(y, logs_dir)
 
 
 def main():
@@ -74,7 +74,7 @@ def main():
     # Derive project root to set absolute defaults
     this_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(this_dir)
-    default_problem = os.path.join(project_root, "problems", "1.py")
+    default_problem = os.path.join(project_root, "reference", "1.py")
     default_logs = os.path.join(project_root, "logs")
 
     parser.add_argument("--problem_py", type=str, default=default_problem, help="Path to Python problem .py file containing 'solution'")
