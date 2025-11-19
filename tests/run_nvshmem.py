@@ -3,7 +3,7 @@ import os
 import sys
 import torch
 import torch.utils.cpp_extension
-import nvshmem
+import nvshmem.core as nvshmem
 
 # Ensure we can find the solution file
 # Assuming script is run from project root or tests/
@@ -69,11 +69,6 @@ nvshmem_ext = torch.utils.cpp_extension.load_inline(
     cpp_sources=[cpp_source],
     extra_cuda_cflags=["-rdc=true", "-arch=sm_80"],
     extra_ldflags=["-lnvshmem", f"-L{NVSHMEM_HOME}/lib"],
-    include_dirs=[
-        f"{NVSHMEM_HOME}/include",
-        "/opt/amazon/openmpi5/include"
-    ],
-    library_dirs=[f"{NVSHMEM_HOME}/lib"],
     with_cuda=True,
     verbose=True
 )
