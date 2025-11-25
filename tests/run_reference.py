@@ -79,6 +79,7 @@ def main():
 
     parser.add_argument("--problem_py", type=str, default=default_problem, help="Path to Python problem .py file containing 'solution'")
     parser.add_argument("--logs_dir", type=str, default=default_logs, help="Directory to write per-rank outputs")
+    parser.add_argument("--log_subdir", type=str, default="reference", help="Subdirectory name for logs (e.g. reference, triton)")
     parser.add_argument("--m", type=int, default=1024, help="Tensor rows")
     parser.add_argument("--n", type=int, default=1024, help="Tensor cols (use 1 for 1D)")
     parser.add_argument("--dtype", type=str, default="float32", choices=["float32", "float16", "bfloat16", "float64"], help="Tensor dtype")
@@ -94,10 +95,8 @@ def main():
     problem_basename = os.path.splitext(os.path.basename(args.problem_py))[0]
     problem_label = f"problem_{problem_basename}"
     logs_problem_root = os.path.join(args.logs_dir, problem_label)
-    logs_reference_dir = os.path.join(logs_problem_root, "reference")
-    logs_solution_dir = os.path.join(logs_problem_root, "solution")
-    os.makedirs(logs_reference_dir, exist_ok=True)
-    os.makedirs(logs_solution_dir, exist_ok=True)
+    logs_output_dir = os.path.join(logs_problem_root, args.log_subdir)
+    os.makedirs(logs_output_dir, exist_ok=True)
 
     dtype_map = {
         "float32": torch.float32,
@@ -109,9 +108,9 @@ def main():
     shape = (args.m, args.n)
 
     py_solution_fn = load_python_solution(args.problem_py)
-    _ = run_python_solution_and_save(py_solution_fn, shape, dtype, logs_reference_dir)
+    _ = run_python_solution_and_save(py_solution_fn, shape, dtype, logs_output_dir)
     if rank == 0:
-        print(f"Wrote per-rank outputs to: {logs_reference_dir}")
+        print(f"Wrote per-rank outputs to: {logs_output_dir}")
 
     dist.barrier()
     # if rank == 0:
